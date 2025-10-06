@@ -24,6 +24,11 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller
 
+    - name: Verify dependencies
+      run: |
+        pip list
+        pip show pillow
+
     - name: Build with PyInstaller
       run: pyinstaller --noconfirm --onedir --windowed --hidden-import=PIL --hidden-import=PIL._imaging --add-data "templates;templates" --name "LD_Turkey_Labeler" app.py
 
