@@ -24,7 +24,7 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller
 
-        - name: Build with PyInstaller
+    - name: Build with PyInstaller
       run: pyinstaller --noconfirm --onedir --windowed --add-data "templates;templates" --add-data "ld_turkey_labeler.db;." --name "LD_Turkey_Labeler" app.py
 
     - name: Upload artifact
