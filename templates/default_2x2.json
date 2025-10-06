@@ -1,0 +1,53 @@
+{
+  "name": "default_2x2",
+  "size_in": [
+    2.0,
+    2.0
+  ],
+  "font": "Helvetica",
+  "fields": [
+    {
+      "name": "product_name",
+      "x": 0.1,
+      "y": 1.6,
+      "size": 10
+    },
+    {
+      "name": "weight",
+      "x": 0.1,
+      "y": 1.4,
+      "size": 9
+    },
+    {
+      "name": "price_per_lb",
+      "x": 0.1,
+      "y": 1.2,
+      "size": 9
+    },
+    {
+      "name": "total_price",
+      "x": 0.1,
+      "y": 1.0,
+      "size": 12
+    },
+    {
+      "name": "sell_by",
+      "x": 0.1,
+      "y": 0.8,
+      "size": 8
+    },
+    {
+      "name": "lot",
+      "x": 0.1,
+      "y": 0.6,
+      "size": 8
+    },
+    {
+      "name": "barcode",
+      "x": 0.1,
+      "y": 0.05,
+      "width": 1.8,
+      "height": 0.5
+    }
+  ]
+}
