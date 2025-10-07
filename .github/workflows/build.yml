@@ -1,6 +1,7 @@
 name: Build Turkey Labeler EXE
 
 on:
+  workflow_dispatch:   # lets you run manually from Actions tab
   push:
     branches: [ "main" ]
   pull_request:
@@ -32,7 +33,7 @@ jobs:
 
     - name: Build EXE with PyInstaller
       run: |
-        python -m PyInstaller --noconfirm --onedir --windowed --hidden-import=PIL --hidden-import=PIL.Image --add-data "templates;templates" --add-data "ld_turkey_labeler.db;." --name "LD_Turkey_Labeler" app.py
+        python -m PyInstaller --noconfirm --onedir --windowed --hidden-import=PIL --hidden-import=PIL.Image --add-data "templates;templates" --name "LD_Turkey_Labeler" app.py
 
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v4
