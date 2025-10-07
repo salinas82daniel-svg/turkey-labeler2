@@ -319,10 +319,25 @@ class GaincoScale:
 def get_setting(key, default=""):
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
-    cur.execute("SELECT value FROM settings WHERE key=?", (key,))
-    row = cur.fetchone()
+    try:
+        cur.execute("SELECT value FROM settings WHERE key=?", (key,))
+        row = cur.fetchone()
+    except sqlite3.OperationalError:
+        # settings table missing → create it and defaults
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS settings (
+                key TEXT PRIMARY KEY,
+                value TEXT
+            )
+        """)
+        cur.execute("INSERT OR IGNORE INTO settings (key, value) VALUES ('touch_keyboard', '1')")
+        cur.execute("INSERT OR IGNORE INTO settings (key, value) VALUES ('scale_port', 'COM2')")
+        cur.execute("INSERT OR IGNORE INTO settings (key, value) VALUES ('printer_port', 'COM1')")
+        conn.commit()
+        row = None
     conn.close()
     return row[0] if row else default
+
 
 def set_setting(key, value):
     conn = sqlite3.connect(DB_FILE)
