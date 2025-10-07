@@ -53,6 +53,9 @@ import serial.tools.list_ports
 import barcode
 from barcode.writer import ImageWriter
 
+# Global toggle for touch keyboard (will be set later)
+TOUCH_KEYBOARD_ENABLED = None
+
 APP_NAME = "L+D Turkey Labeler"
 DB_FILE = "ld_turkey_labeler.db"
 TEMPLATES_FOLDER = "templates"
@@ -319,8 +322,17 @@ class GaincoScale:
 def get_setting(key, default=""):
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
-    cur.execute("SELECT value FROM settings WHERE key=?", (key,))
-    row = cur.fetchone()
+    try:
+        cur.execute("SELECT value FROM settings WHERE key=?", (key,))
+        row = cur.fetchone()
+    except sqlite3.OperationalError:
+        # Auto-create settings table if missing
+        cur.execute("CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT)")
+        cur.execute("INSERT OR IGNORE INTO settings (key,value) VALUES ('touch_keyboard','1')")
+        cur.execute("INSERT OR IGNORE INTO settings (key,value) VALUES ('scale_port','COM2')")
+        cur.execute("INSERT OR IGNORE INTO settings (key,value) VALUES ('printer_port','COM1')")
+        conn.commit()
+        row = None
     conn.close()
     return row[0] if row else default
 
@@ -726,7 +738,15 @@ class App:
             messagebox.showerror('Test Print', msg)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    # Initialize DB and settings before launching GUI
+    init_db()
+
+    global TOUCH_KEYBOARD_ENABLED
+    TOUCH_KEYBOARD_ENABLED = tk.BooleanVar()
+    TOUCH_KEYBOARD_ENABLED.set(get_setting("touch_keyboard", "1") == "1")
+
     root = Tk()
     app = App(root)
     root.mainloop()
+
