@@ -742,7 +742,7 @@ if __name__ == "__main__":
     # Initialize DB and settings before launching GUI
     init_db()
 
-    TOUCH_KEYBOARD_ENABLED = tk.BooleanVar()
+    TOUCH_KEYBOARD_ENABLED = BooleanVar()
     TOUCH_KEYBOARD_ENABLED.set(get_setting("touch_keyboard", "1") == "1")
 
     root = Tk()
