@@ -41,7 +41,7 @@ jobs:
           --name "LD_Turkey_Labeler" app.py
 
       - name: Upload EXE
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: LD_Turkey_Labeler
           path: dist/LD_Turkey_Labeler
