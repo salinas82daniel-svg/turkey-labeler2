@@ -745,12 +745,10 @@ if __name__ == "__main__":
     # Create the Tk root window first
     root = Tk()
 
-    # Now start the app
-    app = App(root)
-
-    # After app has a root, it's safe to create the variable
-    global TOUCH_KEYBOARD_ENABLED
-    TOUCH_KEYBOARD_ENABLED = BooleanVar(root)
+    # Now it's safe to attach BooleanVar to this root
+    TOUCH_KEYBOARD_ENABLED = BooleanVar(master=root)
     TOUCH_KEYBOARD_ENABLED.set(get_setting("touch_keyboard", "1") == "1")
 
+    # Start the app
+    app = App(root)
     root.mainloop()
