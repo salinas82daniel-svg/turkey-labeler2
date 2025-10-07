@@ -742,10 +742,13 @@ if __name__ == "__main__":
     # Initialize DB and settings before launching GUI
     init_db()
 
+    # Create the Tk root window first
+    root = Tk()
+
+    # Now it's safe to create BooleanVar
     TOUCH_KEYBOARD_ENABLED = BooleanVar()
     TOUCH_KEYBOARD_ENABLED.set(get_setting("touch_keyboard", "1") == "1")
 
-    root = Tk()
+    # Start the app
     app = App(root)
     root.mainloop()
-
