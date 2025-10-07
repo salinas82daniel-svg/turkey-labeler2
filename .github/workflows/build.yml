@@ -5,38 +5,41 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    - name: Checkout repo
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Verify requirements.txt exists
-        run: cat requirements.txt
+    - name: Verify requirements
+      run: |
+        cat requirements.txt
+        pip list
 
-      - name: Verify installed packages
-        run: pip list
+    - name: Build EXE with PyInstaller
+      run: |
+        pyinstaller --noconfirm --onedir --windowed ^
+          --hidden-import=PIL ^
+          --hidden-import=PIL.Image ^
+          --add-data "templates;templates" ^
+          --add-data "ld_turkey_labeler.db;." ^
+          --name "LD_Turkey_Labeler" app.py
 
-      - name: Build with PyInstaller
-        run: pyinstaller --noconfirm --onedir --windowed --hidden-import=PIL --hidden-import=PIL.Image --hidden-import=PIL._imaging --add-data "templates;templates" --name "LD_Turkey_Labeler" app.py
-
-      - name: Upload EXE
-        uses: actions/upload-artifact@v4
-        with:
-          name: LD_Turkey_Labeler
-          path: dist/LD_Turkey_Labeler
+    - name: Upload EXE artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: LD_Turkey_Labeler
+        path: dist/LD_Turkey_Labeler/**
