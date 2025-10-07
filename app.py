@@ -745,8 +745,8 @@ if __name__ == "__main__":
     # Create the Tk root window first
     root = Tk()
 
-    # Now it's safe to create BooleanVar
-    TOUCH_KEYBOARD_ENABLED = BooleanVar()
+    # Now it's safe: attach BooleanVar to root
+    TOUCH_KEYBOARD_ENABLED = BooleanVar(master=root)
     TOUCH_KEYBOARD_ENABLED.set(get_setting("touch_keyboard", "1") == "1")
 
     # Start the app
